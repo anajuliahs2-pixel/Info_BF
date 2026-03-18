@@ -5,6 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Bolsa Família — Março de 2026</title>
   <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+
+
   <style>
     :root{
       --bg:#e7e7e7;
@@ -29,7 +34,7 @@
 
     body{
       margin:0;
-      font-family: Arial, Helvetica, sans-serif;
+      font-family: 'DM Sans', Arial, Helvetica, sans-serif;
       background:var(--bg);
       color:var(--text);
     }
@@ -189,6 +194,14 @@
       margin-bottom:16px;
     }
 
+    .bf-subtitle{
+  text-align:center;
+  font-size:14px;
+  color:#5f5f5f;
+  margin:-8px auto 12px;
+  max-width:300px;
+}
+
     .bf-region-tabs button{
       border:1.5px solid #222;
       border-radius:8px;
@@ -324,10 +337,10 @@
     }
 
     .bf-bottom{
-      display:grid;
-      grid-template-columns:1.08fr 0.92fr;
-      gap:14px;
-    }
+  display:flex;
+  justify-content:center;
+  margin-top:10px;
+}
 
     .bf-tip{
       background:#c8ec8e;
@@ -358,13 +371,16 @@
     }
 
     .bf-gov{
-      background:#fff;
-      min-height:170px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:24px;
-    }
+  background:#fff;
+  border:2px solid #222;
+  border-radius:18px;
+  padding:24px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  max-width:420px;
+  width:100%;
+}
 
     .bf-gov img{
       max-width:380px;
@@ -433,7 +449,7 @@
     }
 
     .state-label{
-      font-size:16px;
+      font-size:15px;
       font-weight:700;
       text-anchor:middle;
       fill:#2f2f2f;
@@ -597,6 +613,7 @@
     <div class="bf-main">
       <div class="bf-box bf-map-box">
         <h3 class="bf-title">Mapa Navegável</h3>
+        <p class="bf-subtitle">Para visualizar os dados, selecione um estado ou região.</p>
 
         <div class="bf-region-tabs" id="filters">
           <button class="reg-norte" data-region="Norte">Norte</button>
@@ -643,16 +660,12 @@
       </div>
     </div>
 
-    <div class="bf-bottom">
-      <div class="bf-box bf-tip">
-        <div class="bf-tip-icon">
-  <img src="61942.png" alt="">
-</div>
-        <div class="bf-tip-text">Para visualizar os dados, selecione um estado ou região.</div>
       </div>
 
-      <div class="bf-box bf-gov">
-  <img src="Assinatura SECOM_Prancheta 1.jpg" alt="Governo do Brasil">
+      <div class="bf-bottom">
+  <div class="bf-box bf-gov">
+    <img src="Assinatura SECOM_Prancheta 1.jpg" alt="Governo do Brasil">
+  </div>
 </div>
 
       </div>
@@ -873,30 +886,15 @@
           const state = stateData[uf];
           const region = regionData[state.regiao];
 
-          showTooltip(
-            "<strong>" + state.estado + "</strong><br>" +
-            state.familias + " famílias<br>" +
-            state.regiao + "<br>Média regional: <strong>" + region.media + "</strong>",
-            event.clientX,
-            event.clientY
-          );
-
           if(!selectedUF){
             updatePanel(uf);
           }
         })
-        .on("mousemove", function(event, d){
-          const uf = getUF(d);
-          if(!stateData[uf]) return;
-          tooltip.style.left = (event.clientX + 14) + "px";
-          tooltip.style.top = (event.clientY + 14) + "px";
-        })
         .on("mouseleave", function(){
-          hideTooltip();
-          if(!selectedUF){
-            resetPanel();
-          }
-        })
+  if(!selectedUF){
+    resetPanel();
+  }
+})
         .on("click", function(event, d){
           const uf = getUF(d);
           if(!stateData[uf]) return;
